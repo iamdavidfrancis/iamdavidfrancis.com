@@ -1,2 +1,4 @@
 title: David Francis
 url: https://iamdavidfrancis.com
+
+exclude: ["azure-pipelines.yml"]
