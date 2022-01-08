@@ -9,13 +9,6 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  gh_user: iamdavidfrancis
-  gh_repo: iamdavidfrancis.com
-  gh_pass: $(github_pat)
-  gh_email: $(gh_email)
-  gh_auth_header: $(echo -n "${gh_user}:$(github_pat)" | base64);
-
 stages:
 - stage: Build
   displayName: Build Jekyll Site
@@ -45,6 +38,7 @@ stages:
       - script: 'bundle exec jekyll build -d $(Build.ArtifactStagingDirectory)'
         workingDirectory: $(Build.SourcesDirectory)
         displayName: '[Jekyll] Build Jekyll Static Site'
+
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
