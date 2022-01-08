@@ -45,3 +45,8 @@ stages:
       - script: 'bundle exec jekyll build -d $(Build.ArtifactStagingDirectory)'
         workingDirectory: $(Build.SourcesDirectory)
         displayName: '[Jekyll] Build Jekyll Static Site'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
