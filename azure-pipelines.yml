@@ -33,15 +33,15 @@ stages:
           versionSpec: '>= 3.0'
       
       - script: 'gem install bundler'
-        workingDirectory: $(Build.StagingDirectory)
+        workingDirectory: $(Build.SourcesDirectory)
         displayName: '[Script] Install bundler'
         
       - script: |
           ls -la;
           bundle install
-        workingDirectory: $(Build.StagingDirectory)
+        workingDirectory: $(Build.SourcesDirectory)
         displayName: '[Script] Install Jekyll and Dependencies'
         
       - script: 'bundle exec jekyll build -d $(Build.ArtifactStagingDirectory)'
-        workingDirectory: $(Build.StagingDirectory)
+        workingDirectory: $(Build.SourcesDirectory)
         displayName: '[Jekyll] Build Jekyll Static Site'
