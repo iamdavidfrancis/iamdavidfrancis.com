@@ -1,0 +1,47 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+resources:
+- repo: self
+
+variables:
+  gh_user: iamdavidfrancis
+  gh_repo: iamdavidfrancis.com
+  gh_pass: $(github_pat)
+  gh_email: $(gh_email)
+  gh_auth_header: $(echo -n "${gh_user}:$(github_pat)" | base64);
+
+stages:
+- stage: Build
+  displayName: Build Jekyll Site
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      - checkout: self
+        displayName: 'Checkout repository'
+      - task: UseRubyVersion@0
+        displayName: '[Ruby] Use Ruby >= 3.0'
+        inputs:
+          versionSpec: '>= 3.0'
+      
+      - script: 'gem install bundler'
+        workingDirectory: $(Build.StagingDirectory)
+        displayName: '[Script] Install bundler'
+        
+      - script: |
+          ls -la;
+          bundle install
+        workingDirectory: $(Build.StagingDirectory)
+        displayName: '[Script] Install Jekyll and Dependencies'
+        
+      - script: 'bundle exec jekyll build -d $(Build.ArtifactStagingDirectory)'
+        workingDirectory: $(Build.StagingDirectory)
+        displayName: '[Jekyll] Build Jekyll Static Site'
